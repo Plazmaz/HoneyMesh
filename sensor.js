@@ -4,19 +4,25 @@ const publicIp = require('public-ip');
 const fs = require('fs');
 function Sensor(server) {
     this.attackers = {};
+	var instance = this;
     publicIp.v4().then(ip => {
-        this.id = crypto.createHash('sha256').update(ip).digest('base64');
-    });
+        instance.id = crypto.createHash('sha256').update(ip).digest('hex');
+    });	
 
     this.addAttacker = function(ip, fingerprint) {
-        attackers[ip] = fingerprint;
+		console.log("Unhashed fingerprint: " + fingerprint)
+        instance.attackers[ip] = crypto.createHash('sha256').update(fingerprint).digest('hex');
     }
 
     this.logCommand = function(ip, command, fingerprint) {
-        if(!fingerprint && attackers[ip]) {
-            fingerprint = attackers[ip];
+        if(!fingerprint && instance.attackers[ip]) {
+            fingerprint = instance.attackers[ip];
         }
-        request(server, "/logCommand?id=" + this.id + "&attacker=" + ip + "&timestamp=" + new Date().toISOString() + (fingerprint ? "&fingerprint=" + fingerprint : "") + "&command=" + command);
+        request(server + "/logCommand?id=" + instance.id + "&attacker=" + ip + "&timestamp=" + new Date().toISOString() + (fingerprint ? "&fingerprint=" + fingerprint : "") + "&command=" + command, function(err, resp) {
+			if(err) {
+				console.log("ERR: " + err);
+			}
+		});
     }
 }
 module.exports = Sensor;
