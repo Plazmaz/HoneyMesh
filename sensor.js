@@ -8,7 +8,7 @@ function Sensor(server) {
 	if((httpIdx == -1 && server.indexOf(":") == -1) || server.substr(httpIdx).indexOf(":") == -1) {
 		server += ":85"; //Default HoneyMesh port.
 	}
-	consoel.log("Server is: " + server);
+	console.log("Server is: " + server);
 	if(httpIdx == -1) {
 		server = "http://" + server 
 	}
