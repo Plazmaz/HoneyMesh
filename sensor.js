@@ -3,8 +3,14 @@ const crypto = require('crypto');
 const publicIp = require('public-ip');
 const fs = require('fs');
 function Sensor(server) {
-	if(server.indexOf(":") == -1) {
+	var httpIdx = server.indexOf("http://");
+	httpIdx = httpIdx == -1 ? server.indexOf("https://") : httpIdx;
+	if((httpIdx == -1 && server.indexOf(":") == -1) || server.substr(httpIdx).indexOf(":") == -1) {
 		server += ":85"; //Default HoneyMesh port.
+	}
+	consoel.log("Server is: " + server);
+	if(httpIdx == -1) {
+		server = "http://" + server 
 	}
     this.attackers = {};
 	var instance = this;
