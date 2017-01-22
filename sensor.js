@@ -3,6 +3,9 @@ const crypto = require('crypto');
 const publicIp = require('public-ip');
 const fs = require('fs');
 function Sensor(server) {
+	if(server.indexOf(":") == -1) {
+		server += ":85"; //Default HoneyMesh port.
+	}
     this.attackers = {};
 	var instance = this;
     publicIp.v4().then(ip => {

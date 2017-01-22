@@ -1,11 +1,20 @@
 var express = require('express');
 var fs = require('fs');
+const parseArgs = require('minimist');
 const IP_WHITELIST = JSON.parse(fs.readFileSync('whitelist.json'));
 const LOG_FILE = "honeymesh.log"
 var app = express();
 //var id = 1;
-
-app.listen(80)
+var args = parseArgs(process.argv);
+const PORT = args.port || args.p || 85
+if(args.h || args.help) {
+	console.log("Help:");
+	console.log("--port, -p: The port to listen on");
+	console.log("			    Default: 85");
+	console.log("-h, --help:	Displays this message and returns");
+	process.exit()
+}
+app.listen(PORT)
 app.use(function(req, res, next) {
 	var address = req.connection.remoteAddress;
 	if(address.indexOf("::ffff:") == 0) {
