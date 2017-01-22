@@ -8,10 +8,10 @@ function Sensor(server) {
 	if((httpIdx == -1 && server.indexOf(":") == -1) || server.substr(httpIdx).indexOf(":") == -1) {
 		server += ":85"; //Default HoneyMesh port.
 	}
-	console.log("Server is: " + server);
 	if(httpIdx == -1) {
 		server = "http://" + server 
 	}
+	console.log("Logging to server: " + server);
     this.attackers = {};
 	var instance = this;
     publicIp.v4().then(ip => {
