@@ -24,6 +24,7 @@ function Sensor(server) {
     }
 
     this.logCommand = function(ip, command, fingerprint) {
+	command = encodeURIComponent(command);
         if(!fingerprint && instance.attackers[ip]) {
             fingerprint = instance.attackers[ip];
         }
