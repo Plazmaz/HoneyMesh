@@ -52,7 +52,7 @@ app.get('/logCommand', function(req, res) {
 	var attacker = req.query.attacker;
 	var timestamp = req.query.timestamp || new Date().toISOString();
 	var fingerprint = req.query.fingerprint || "";
-	var command = req.query.command;
+	var command = decodeURIComponent(req.query.command);
 	log("[" + id + "] " + attacker + (req.query.fingerprint ? " (" + fingerprint + ")" : "") + ": " + command)
 	res.end();
 })
